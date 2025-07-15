@@ -1,0 +1,49 @@
+/* File: resources/css/odontogram.css */
+.tooth {
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.tooth:hover {
+    filter: brightness(0.95);
+}
+
+.tooth-selected {
+    cursor: pointer;
+}
+
+.surface {
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.surface:hover {
+    filter: brightness(0.9);
+}
+
+.surface-selected {
+    filter: brightness(0.85);
+    stroke: #2563eb !important;
+    stroke-width: 1.5 !important;
+}
+
+.tooth-number {
+    user-select: none;
+}
+
+/* Animation for condition changes */
+@keyframes pulse {
+    0% {
+        opacity: 0.5;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0.5;
+    }
+}
+
+.condition-new {
+    animation: pulse 2s ease-in-out infinite;
+}
