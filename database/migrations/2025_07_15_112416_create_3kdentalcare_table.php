@@ -471,12 +471,12 @@ return new class extends Migration
             $table->boolean('is_active')->default(true);
             $table->timestamps();
 
-            // Indexes
-            $table->index(['tooth_condition_id', 'is_active']);
-            $table->index(['tooth_bridge_id', 'is_active']);
-            $table->index(['tooth_indicator_id', 'is_active']);
-            $table->index(['icd_10_codes_diagnoses_id']);
-            $table->index(['diagnosed_by', 'diagnosed_at']);
+            // Indexes with custom names
+            $table->index(['tooth_condition_id', 'is_active'], 'tdp_condition_active_idx');
+            $table->index(['tooth_bridge_id', 'is_active'], 'tdp_bridge_active_idx');
+            $table->index(['tooth_indicator_id', 'is_active'], 'tdp_indicator_active_idx');
+            $table->index(['icd_10_codes_diagnoses_id'], 'tdp_icd10_diag_idx');
+            $table->index(['diagnosed_by', 'diagnosed_at'], 'tdp_diagnosed_idx');
 
             // Ensure only one primary diagnosis per parent
             $table->unique(['tooth_condition_id'], 'unique_primary_diagnosis_condition');
@@ -501,13 +501,13 @@ return new class extends Migration
             $table->boolean('is_active')->default(true);
             $table->timestamps();
 
-            // Indexes
-            $table->index(['tooth_diagnoses_primary_id', 'is_active']);
-            $table->index(['icd_10_codes_diagnoses_id']);
-            $table->index(['diagnosed_by', 'diagnosed_at']);
+            // Indexes with custom names to avoid MySQL length limit
+            $table->index(['tooth_diagnoses_primary_id', 'is_active'], 'tds_primary_active_idx');
+            $table->index(['icd_10_codes_diagnoses_id'], 'tds_icd10_diag_idx');
+            $table->index(['diagnosed_by', 'diagnosed_at'], 'tds_diagnosed_idx');
 
-            // Prevent duplicate secondary diagnoses
-            $table->unique(['tooth_diagnoses_primary_id', 'icd_10_codes_diagnoses_id'], 'unique_secondary_diagnosis');
+            // Prevent duplicate secondary diagnoses with custom constraint name
+            $table->unique(['tooth_diagnoses_primary_id', 'icd_10_codes_diagnoses_id'], 'unique_secondary_diag');
         });
 
         // 21. Tooth treatments table
@@ -552,12 +552,12 @@ return new class extends Migration
             $table->foreignId('icd_9cm_codes_id')->constrained('icd_9cm_codes')->onDelete('cascade');
             $table->timestamps();
 
-            // Indexes
-            $table->index(['tooth_treatment_id']);
-            $table->index(['icd_9cm_codes_id']);
+            // Indexes with custom names
+            $table->index(['tooth_treatment_id'], 'ttp_treatment_idx');
+            $table->index(['icd_9cm_codes_id'], 'ttp_icd9_idx');
 
-            // Prevent duplicate procedures
-            $table->unique(['tooth_treatment_id', 'icd_9cm_codes_id'], 'unique_treatment_procedure');
+            // Prevent duplicate procedures with custom constraint name
+            $table->unique(['tooth_treatment_id', 'icd_9cm_codes_id'], 'unique_treatment_proc');
         });
 
         // 23. Odontogram revisions table
